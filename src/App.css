@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+
 .App {
   text-align: center;
 }
@@ -35,4 +38,29 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.label-text-style
+{
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+}
+
+.rHeading
+{
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+}
+
+.dark-border {
+  border: 50px solid #333; /* Dark border color */
+}
+
+.label-text-style {
+  display: flex;
+  flex-direction: column;
+}
+
+.label-text-style label {
+  margin-bottom: 5px;
 }
