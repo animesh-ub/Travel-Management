@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "./Login.css";
 
 const Login = () => {
@@ -20,13 +22,16 @@ const Login = () => {
     setLoading(false);
   };
 
-//   function delay(ms) {
-//     return new Promise((resolve) => setTimeout(resolve, ms));
-//   }
+
+
+  //   function delay(ms) {
+  //     return new Promise((resolve) => setTimeout(resolve, ms));
+  //   }
 
   return (
     <div
       className="sign-in__wrapper">
+
       <div className="sign-in__backdrop"></div>
       <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
         {/* <img

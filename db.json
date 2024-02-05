@@ -1,0 +1,28 @@
+{
+  "user": [
+    {
+      "firstName": "Saurav",
+      "lastName": "Pandey",
+      "address": "lucknow",
+      "mobileNumber": "3344556677",
+      "email": "tandon@gmail.com",
+      "password": "Animesh@10",
+      "roleId": null,
+      "departmentId": null,
+      "managerId": null,
+      "id": "3TEZdeu"
+    },
+    {
+      "firstName": "Chirag",
+      "lastName": "Pandey",
+      "address": "Pune",
+      "mobileNumber": "3344556677",
+      "email": "chirag@gmail.com",
+      "password": "Chir@g",
+      "roleId": null,
+      "departmentId": null,
+      "managerId": null,
+      "id": "3TEZdea"
+    }
+  ]
+}

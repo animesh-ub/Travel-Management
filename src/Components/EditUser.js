@@ -1,133 +1,150 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import './registration.css';
+import './registration.css'
+import { Link } from 'react-router-dom';
+
+
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate } from 'react-router-dom';
+
+const EditUser = () => {
+  const { userid } = useParams();
+
+  const Navigate = useNavigate();
+  const [roles, setRoles] = useState([]);
+  const [managers, setManagers] = useState([]);
+  const [depts, setDepts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+
+      fetch('http://localhost:21384/api/User/GetRoles')
+          .then(response => response.json())
+          .then(data => {
+              setRoles(data);
+              setLoading(false);
+          })
+          .catch(error => {
+              console.error('Error fetching roles:', error);
+              setLoading(false);
+          });
+
+      fetch('http://localhost:21384/api/User/GetManagers')
+          .then(response => response.json())
+          .then(data => {
+              setManagers(data);
+              setLoading(false);
+          })
+          .catch(error => {
+              console.error('Error fetching managers:', error);
+              setLoading(false);
+          });
+
+      fetch('http://localhost:21384/api/User/GetDepartments')
+          .then(response => response.json())
+          .then(data => {
+              setDepts(data);
+              setLoading(false);
+          })
+          .catch(error => {
+              console.error('Error fetching departments:', error);
+              setLoading(false);
+          });
+  }, []);
+
+  const formik = useFormik({
+      initialValues: {
+          firstName: '',
+          lastName: '',
+          address: '',
+          mobileNumber: '',
+          emailId: '',
+          password: '',
+          role: '',
+          department: '',
+          manager: '',
+      },
+      validationSchema: Yup.object({
+          firstName: Yup.string()
+              .max(15, 'Must be 15 characters or less')
+              .required('Required'),
+          lastName: Yup.string()
+              .max(15, 'Must be 15 characters or less')
+              .required('Required'),
+          address: Yup.string()
+              .max(50, 'Must be 50 characters or less')
+              .required('Required'),
+          mobileNumber: Yup.string()
+              .matches(/^[0-9]{10}$/, 'Must be a valid phone number')
+              .required('Required'),
+          emailId: Yup.string()
+              .email('Invalid email address')
+              .required('Required'),
+          password: Yup.string()
+              .min(8, 'Must be at least 8 characters')
+              .required('Required'),
+          role: Yup.string()
+              // .oneOf(['Employee', 'Manager'], 'Invalid Role')
+              .required('Required'),
+      }),
+      onSubmit: async (values, { setSubmitting, resetForm }) => {
+          try {
+
+              const response = await fetch('http://localhost:21384/api/User/' + userid, {
+                  method: 'PUT',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  // body: JSON.stringify(values),
+                  body: JSON.stringify({
+                      firstName: values.firstName,
+                      lastName: values.lastName,
+                      address: values.address,
+                      mobileNumber: values.mobileNumber,
+                      email: values.emailId,
+                      password: values.password,
+                      roleId: parseInt(values.role),
+                      departmentId: parseInt(values.department),
+                      managerId: parseInt(values.manager),
+                  }),
+              });
+              const data = await response.json();
+              console.log('User added:', data);
+
+              alert("Saved Successfully");
+              setSubmitting(false);
+              resetForm();
+              Navigate("/")
+          } catch (error) {
+              console.error('Error adding user:', error);
+          } finally {
+              setSubmitting(false);
+          }
+      },
+  });
 
 
+  // const [userData, setUserData] = useState({})
 
-const Registration = () => {
-    const Navigate = useNavigate();
-    const [roles, setRoles] = useState([]);
-    const [managers, setManagers] = useState([]);
-    const [depts, setDepts] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-
-        fetch('http://localhost:21384/api/User/GetRoles')
-            .then(response => response.json())
-            .then(data => {
-                setRoles(data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching roles:', error);
-                setLoading(false);
-            });
-
-        fetch('http://localhost:21384/api/User/GetManagers')
-            .then(response => response.json())
-            .then(data => {
-                setManagers(data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching managers:', error);
-                setLoading(false);
-            });
-
-        fetch('http://localhost:21384/api/User/GetDepartments')
-            .then(response => response.json())
-            .then(data => {
-                setDepts(data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching departments:', error);
-                setLoading(false);
-            });
-    }, []);
-
-    const formik = useFormik({
-        initialValues: {
-            firstName: '',
-            lastName: '',
-            address: '',
-            mobileNumber: '',
-            emailId: '',
-            password: '',
-            role: '',
-            department: '',
-            manager: '',
-        },
-        validationSchema: Yup.object({
-            firstName: Yup.string()
-                .max(15, 'Must be 15 characters or less')
-                .required('Required'),
-            lastName: Yup.string()
-                .max(15, 'Must be 15 characters or less')
-                .required('Required'),
-            address: Yup.string()
-                .max(50, 'Must be 50 characters or less')
-                .required('Required'),
-            mobileNumber: Yup.string()
-                .matches(/^[0-9]{10}$/, 'Must be a valid phone number')
-                .required('Required'),
-            emailId: Yup.string()
-                .email('Invalid email address')
-                .required('Required'),
-            password: Yup.string()
-                .min(8, 'Must be at least 8 characters')
-                .required('Required'),
-            role: Yup.string()
-                // .oneOf(['Employee', 'Manager'], 'Invalid Role')
-                .required('Required'),
-        }),
-        onSubmit: async (values, { setSubmitting, resetForm }) => {
-            try {
-
-                const response = await fetch('http://localhost:21384/api/User/Add', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    // body: JSON.stringify(values),
-                    body: JSON.stringify({
-                        firstName: values.firstName,
-                        lastName: values.lastName,
-                        address: values.address,
-                        mobileNumber: values.mobileNumber,
-                        email: values.emailId,
-                        password: values.password,
-                        roleId: parseInt(values.role),
-                        departmentId: parseInt(values.department),
-                        managerId: parseInt(values.manager),
-                    }),
-                });
-                const data = await response.json();
-                console.log('User added:', data);
-
-                alert("Saved Successfully");
-                setSubmitting(false);
-                resetForm();
-                Navigate("/")
-            } catch (error) {
-                console.error('Error adding user:', error);
-            } finally {
-                setSubmitting(false);
-            }
-        },
+  useEffect(() => {
+    fetch("http://localhost:8000/user/" + userid).then((res) => {
+      return res.json();
+    }).then((resp) => {
+      // console.log();
+      // setUserData(resp);
+    }).catch((err) => {
+      console.error(err.message);
     });
 
+  }, []);
 
-    return (
-        <div className="container-fluid">
+  return (
+    <div className="container-fluid">
             <div>
                 <div className="row justify-content-center form-wrapper my-2">
                     <div className="col-md-6 form">
-                        <h1 className="text-center mb-4 rHeading">Add User</h1>
+                        <h1 className="text-center mb-4 rHeading">Edit User</h1>
                         <form onSubmit={formik.handleSubmit}>
                             <div className="row g-3">
                                 <div className="col-md-6 label-text-style align-items-start">
@@ -346,6 +363,6 @@ const Registration = () => {
             </div>
         </div>
     );
-};
+}
 
-export default Registration;
+export default EditUser
