@@ -20,9 +20,9 @@ function App() {
         </Routes>
         
       </BrowserRouter> 
-     {/* {/* <Registration />
+     {/* {/* <Registration />} */}
      
-      <Login/> */}
+      {/* <Login/>  */}
 
     </div>
   );

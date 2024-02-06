@@ -267,13 +267,14 @@ useEffect(() => {
                 resetForm();
                 Navigate("/")
               }
- 
+
               
           } catch (error) {
               console.error('Error adding user:', error);
           } finally {
               setSubmitting(false);
           }
+          
       },
   });
   useEffect(() => {
