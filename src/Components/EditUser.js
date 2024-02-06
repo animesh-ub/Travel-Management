@@ -4,21 +4,166 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import './registration.css'
 import { Link } from 'react-router-dom';
-
+import "./EditUser.css";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const EditUser = () => {
-  const { userid } = useParams();
-
   const Navigate = useNavigate();
   const [roles, setRoles] = useState([]);
   const [managers, setManagers] = useState([]);
   const [depts, setDepts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { userid } = useParams();
+  const [userData, setUserData] = useState(null);
 
-  useEffect(() => {
+//   useEffect(() => {
 
+//       fetch('http://localhost:21384/api/User/GetRoles')
+//           .then(response => response.json())
+//           .then(data => {
+//               setRoles(data);
+//               setLoading(false);
+//           })
+//           .catch(error => {
+//               console.error('Error fetching roles:', error);
+//               setLoading(false);
+//           });
+
+//       fetch('http://localhost:21384/api/User/GetManagers')
+//           .then(response => response.json())
+//           .then(data => {
+//               setManagers(data);
+//               setLoading(false);
+//           })
+//           .catch(error => {
+//               console.error('Error fetching managers:', error);
+//               setLoading(false);
+//           });
+
+//       fetch('http://localhost:21384/api/User/GetDepartments')
+//           .then(response => response.json())
+//           .then(data => {
+//               setDepts(data);
+//               setLoading(false);
+//           })
+//           .catch(error => {
+//               console.error('Error fetching departments:', error);
+//               setLoading(false);
+//           });
+//   }, []);
+
+//   const formik = useFormik({
+//       initialValues: {
+//           firstName: '',
+//           lastName: '',
+//           address: '',
+//           mobileNumber: '',
+//           emailId: '',
+//           password: '',
+//           role: '',
+//           department: '',
+//           manager: '',
+//       },
+//       validationSchema: Yup.object({
+//           firstName: Yup.string()
+//               .max(15, 'Must be 15 characters or less')
+//               .required('Required'),
+//           lastName: Yup.string()
+//               .max(15, 'Must be 15 characters or less')
+//               .required('Required'),
+//           address: Yup.string()
+//               .max(50, 'Must be 50 characters or less')
+//               .required('Required'),
+//           mobileNumber: Yup.string()
+//               .matches(/^[0-9]{10}$/, 'Must be a valid phone number')
+//               .required('Required'),
+//           emailId: Yup.string()
+//               .email('Invalid email address')
+//               .required('Required'),
+//           password: Yup.string()
+//               .min(8, 'Must be at least 8 characters')
+//               .required('Required'),
+//           role: Yup.string()
+//               // .oneOf(['Employee', 'Manager'], 'Invalid Role')
+//               .required('Required'),
+//       }),
+//       onSubmit: async (values, { setSubmitting, resetForm }) => {
+//           try {
+
+//               const response = await fetch('http://localhost:21384/api/User/' + userid, {
+//                   method: 'PUT',
+//                   headers: {
+//                       'Content-Type': 'application/json',
+//                   },
+//                   // body: JSON.stringify(values),
+//                   body: JSON.stringify({
+//                       firstName: values.firstName,
+//                       lastName: values.lastName,
+//                       address: values.address,
+//                       mobileNumber: values.mobileNumber,
+//                     //   email: values.emailId,
+//                     //   password: values.password,
+//                       roleId: parseInt(values.role),
+//                       departmentId: parseInt(values.department),
+//                       managerId: parseInt(values.manager),
+//                   }),
+//               });
+//               const data = await response.json();
+//               console.log('User Updated:', data);
+
+//               alert("Updated Successfully");
+//             //   setSubmitting(false);
+//               resetForm();
+//               Navigate("/")
+//           } catch (error) {
+//               console.error('Error updating user:', error);
+//           } finally {
+//               setSubmitting(false);
+//           }
+//       },
+//   });
+
+
+//   // const [userData, setUserData] = useState({})
+
+//   useEffect(() => {
+//     fetch('http://localhost:21384/api/User/' + userid)
+//     .then(res => res.json())
+//     .then(resp => {
+//         formik.setValues({
+//             firstName: resp.firstName,
+//             lastName: resp.lastName,
+//             address: resp.address,
+//             mobileNumber: resp.mobileNumber,
+//             // emailId: resp.emailId,
+//             // password: resp.password,
+//             roleId: parseInt(resp.role),
+//             departmentId: parseInt(resp.department),
+//             managerId: parseInt(resp.manager),
+//         });
+//       console.log(resp);
+//       // setUserData(resp);
+//     }).catch(err => {
+//       console.error(err.message);
+//     });
+
+//   }, [userid]);
+
+useEffect(() => {
+    fetch(`http://localhost:21384/api/User/GetById/${userid}`)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+      setUserData(data);
+      setLoading(false);
+    })
+    .catch(error => {
+      console.error('Error fetching user details:', error);
+      setLoading(false);
+    });
+ 
+ 
       fetch('http://localhost:21384/api/User/GetRoles')
           .then(response => response.json())
           .then(data => {
@@ -29,7 +174,7 @@ const EditUser = () => {
               console.error('Error fetching roles:', error);
               setLoading(false);
           });
-
+ 
       fetch('http://localhost:21384/api/User/GetManagers')
           .then(response => response.json())
           .then(data => {
@@ -40,7 +185,7 @@ const EditUser = () => {
               console.error('Error fetching managers:', error);
               setLoading(false);
           });
-
+ 
       fetch('http://localhost:21384/api/User/GetDepartments')
           .then(response => response.json())
           .then(data => {
@@ -52,25 +197,30 @@ const EditUser = () => {
               setLoading(false);
           });
   }, []);
-
+ 
+ 
   const formik = useFormik({
       initialValues: {
-          firstName: '',
-          lastName: '',
-          address: '',
-          mobileNumber: '',
-          emailId: '',
-          password: '',
-          role: '',
-          department: '',
-          manager: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        address:'',
+        mobileNumber: '',
+        role: '',
+        department:'',
+        manager: '',
+        createBy : '',
+        createdOn : ''
       },
       validationSchema: Yup.object({
           firstName: Yup.string()
               .max(15, 'Must be 15 characters or less')
+              .matches(/^[A-Za-z]+$/, 'Only alphabetic characters are allowed')
               .required('Required'),
           lastName: Yup.string()
               .max(15, 'Must be 15 characters or less')
+              .matches(/^[A-Za-z]+$/, 'Only alphabetic characters are allowed')
               .required('Required'),
           address: Yup.string()
               .max(50, 'Must be 50 characters or less')
@@ -78,20 +228,20 @@ const EditUser = () => {
           mobileNumber: Yup.string()
               .matches(/^[0-9]{10}$/, 'Must be a valid phone number')
               .required('Required'),
-          emailId: Yup.string()
-              .email('Invalid email address')
-              .required('Required'),
-          password: Yup.string()
-              .min(8, 'Must be at least 8 characters')
-              .required('Required'),
+        //   emailId: Yup.string()
+        //       .email('Invalid email address')
+        //       .required('Required'),
+        //   password: Yup.string()
+        //       .min(8, 'Must be at least 8 characters')
+        //       .required('Required'),
           role: Yup.string()
               // .oneOf(['Employee', 'Manager'], 'Invalid Role')
               .required('Required'),
       }),
       onSubmit: async (values, { setSubmitting, resetForm }) => {
           try {
-
-              const response = await fetch('http://localhost:21384/api/User/' + userid, {
+ 
+              const response = await fetch('http://localhost:21384/api/User/Update/' + userid, {
                   method: 'PUT',
                   headers: {
                       'Content-Type': 'application/json',
@@ -102,20 +252,23 @@ const EditUser = () => {
                       lastName: values.lastName,
                       address: values.address,
                       mobileNumber: values.mobileNumber,
-                      email: values.emailId,
+                      email: values.email,
                       password: values.password,
+                      createBy: values.createBy,
+                      createdOn:  values.createdOn,
                       roleId: parseInt(values.role),
                       departmentId: parseInt(values.department),
                       managerId: parseInt(values.manager),
                   }),
               });
-              const data = await response.json();
-              console.log('User added:', data);
-
-              alert("Saved Successfully");
-              setSubmitting(false);
-              resetForm();
-              Navigate("/")
+              if(response.ok){
+                alert("Added Successfully");
+                setSubmitting(false);
+                resetForm();
+                Navigate("/")
+              }
+ 
+              
           } catch (error) {
               console.error('Error adding user:', error);
           } finally {
@@ -123,21 +276,23 @@ const EditUser = () => {
           }
       },
   });
-
-
-  // const [userData, setUserData] = useState({})
-
   useEffect(() => {
-    fetch("http://localhost:8000/user/" + userid).then((res) => {
-      return res.json();
-    }).then((resp) => {
-      // console.log();
-      // setUserData(resp);
-    }).catch((err) => {
-      console.error(err.message);
-    });
-
-  }, []);
+    if (userData) {
+      formik.setValues({
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        address: userData.address,
+        mobileNumber: userData.mobileNumber,
+        email: userData.email,
+        password: userData.password,
+        createBy: userData.createBy,
+        createdOn: userData.createdOn,
+        role: userData.roleId || '',
+        department: userData.departmentId ||'',
+        manager: userData.managerId || ''
+      });
+    }
+  }, [userData]);
 
   return (
     <div className="container-fluid">
@@ -187,20 +342,20 @@ const EditUser = () => {
                                 </div>
                             </div>
 
-                            <div className="row g-3">
+                            {/* <div className="row g-3">
                                 <div className="col-md-12 label-text-style align-items-start">
-                                    {/* <label htmlFor="emailId" className="form-label label-text-style">
-                                        Email ID
-                                    </label> */}
+                               
                                     <input
                                         id="emailId"
                                         name="emailId"
                                         placeholder='Email'
                                         type="email"
-                                        className={`form-control-sm form-control dark-border ${formik.touched.emailId && formik.errors.emailId ? 'is-invalid' : ''}`}
+                                        className={`form-control-sm form-control dark-border  formik.values.showInput ? '' : 'hidden-input'  ${formik.touched.emailId && formik.errors.emailId ? 'is-invalid' : ''}`}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.emailId}
+                                        value={formik.values.email}
+                                        
+                                        readOnly
                                     />
                                     {formik.touched.emailId && formik.errors.emailId ? (
                                         <div className="invalid-feedback">{formik.errors.emailId}</div>
@@ -208,24 +363,23 @@ const EditUser = () => {
                                 </div>
 
                                 <div className="col-md-12 label-text-style align-items-start">
-                                    {/* <label htmlFor="password" className="form-label label-text-style">
-                                        Password
-                                    </label> */}
+                                  
                                     <input
                                         id="password"
                                         name="password"
                                         placeholder='Password'
                                         type="password"
-                                        className={`form-control-sm form-control dark-border ${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`}
+                                        className={`form-control-sm form-control dark-border  formik.values.showInput ? '' : 'hidden-input' ${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                         value={formik.values.password}
+                                        readOnly
                                     />
                                     {formik.touched.password && formik.errors.password ? (
                                         <div className="invalid-feedback">{formik.errors.password}</div>
                                     ) : null}
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div className="row g-3">
                                 <div className="col-md-12 label-text-style align-items-start">

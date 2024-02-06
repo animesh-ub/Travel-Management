@@ -65,9 +65,11 @@ const Registration = () => {
         validationSchema: Yup.object({
             firstName: Yup.string()
                 .max(15, 'Must be 15 characters or less')
+                .matches(/^[A-Za-z]+$/, 'Only alphabetic characters are allowed')
                 .required('Required'),
             lastName: Yup.string()
                 .max(15, 'Must be 15 characters or less')
+                .matches(/^[A-Za-z]+$/, 'Only alphabetic characters are allowed')
                 .required('Required'),
             address: Yup.string()
                 .max(50, 'Must be 50 characters or less')
@@ -106,19 +108,28 @@ const Registration = () => {
                         managerId: parseInt(values.manager),
                     }),
                 });
-                const data = await response.json();
-                console.log('User added:', data);
+                // const data = await response.json();
+                // console.log('User added:', data);
+                if(response.ok)
+                {
+                    // console.log('User added');
+                    alert("Saved Successfully");
+                    resetForm();
+                    Navigate("/")
+                }
 
-                alert("Saved Successfully");
-                setSubmitting(false);
-                resetForm();
-                Navigate("/")
+                
             } catch (error) {
                 console.error('Error adding user:', error);
+              
+                // setSubmitting(false);
+
+               
+             
             } finally {
                 setSubmitting(false);
             }
-        },
+        }
     });
 
 

@@ -8,43 +8,77 @@ const UserDetail = () => {
   const [userData, setUserData] = useState({})
 
   useEffect(() => {
-    fetch("http://localhost:8000/user/" + userid).then((res) => {
+    console.log(userid);
+    fetch("http://localhost:21384/api/User/GetUserViewById/" + userid).then((res) => {
       return res.json();
     }).then((resp) => {
-      // console.log();
       setUserData(resp);
     }).catch((err) => {
       console.error(err.message);
     });
 
   }, []);
-  return (
-    <div className="container mt-4 details_wrapper ">
-      <div className="card">
-        <div className="card-header bg-primary text-white">
-          <h2>User Details</h2>
-        </div>
-        <div className="card-body">
-          {userData &&
-            <>
-              <h2 className="card-title">User First Name is: <b className="float-left">{userData.firstName}</b></h2>
-              <h3 className="card-text float-left">User Id is: {userData.id}</h3>
-              <h3 className="card-text float-left">User Last Name is: {userData.lastName}</h3>
-              <h3 className="card-text float-left">User Address is: {userData.address}</h3>
-              <h3 className="card-text float-left">User Mobile Number is: {userData.mobileNumber}</h3>
-              <h3 className="card-text float-left">User Role is: {userData.roleId}</h3>
-              <h3 className="card-text float-left">User Department is: {userData.departmentId}</h3>
-              <h3 className="card-text float-left">User Manager is: {userData.managerId}</h3>
-              <div className="clearfix"></div>
-              <Link className="btn btn-danger" cla to="/">Back to Dashboard</Link>
-            </>
-          }
+  if (userData[0] != null) {
+
+    return (
+      <div className="container mt-4 details_wrapper ">
+        <div className="card">
+          <div className="card-header bg-primary text-white">
+            <h2>User Details</h2>
+          </div>
+          <div className="card-body">
+            {userData &&
+              <table className="table">
+                <tbody>
+                  <tr>
+                    <td>User First Name:</td>
+                    <td>{userData[0].firstName}</td>
+                  </tr>
+                  <tr>
+                    <td>User Id:</td>
+                    <td>{userData[0].userId}</td>
+                  </tr>
+                  <tr>
+                    <td>User Last Name:</td>
+                    <td>{userData[0].lastName}</td>
+                  </tr>
+                  <tr>
+                    <td>User Address:</td>
+                    <td>{userData[0].address}</td>
+                  </tr>
+                  <tr>
+                    <td>User Mobile Number:</td>
+                    <td>{userData[0].mobileNumber}</td>
+                  </tr>
+                  <tr>
+                    <td>User Role:</td>
+                    <td>{userData[0].roleName}</td>
+                  </tr>
+                  <tr>
+                    <td>User Department:</td>
+                    <td>{userData[0].departmentName}</td>
+                  </tr>
+                  <tr>
+                    <td>User Manager:</td>
+                    <td>{userData[0].managerName}</td>
+                  </tr>
+                </tbody>
+              </table>
+            }
+            <div className="clearfix"></div>
+            <Link className="btn btn-danger" to="/">
+              Back to Dashboard
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
 
 
-  )
+
+    )
+
+  }
+
 }
 
 export default UserDetail

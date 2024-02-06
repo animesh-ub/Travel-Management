@@ -13,15 +13,16 @@ function App() {
       <h1>Travel App</h1>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<ShowUSer />}>
-          </Route>
-          <Route path='/user/create' element={<Registration/>}></Route>
-          <Route path="/user/detail/:userid" element={<UserDetail/>}> </Route>
-          <Route path='/user/edit/:userid' element={<EditUser/>}></Route>
+          <Route path='/' element={<ShowUSer />}></Route>
+          <Route path='/user/create' element={<Registration />}></Route>
+          <Route path="/user/detail/:userid" element={<UserDetail />}> </Route>
+          <Route path='/user/edit/:userid' element={<EditUser />}></Route>
         </Routes>
-      </BrowserRouter>
-      {/* <Registration /> */}
-      {/* <Login/> */}
+        
+      </BrowserRouter> 
+     {/* {/* <Registration />
+     
+      <Login/> */}
 
     </div>
   );
