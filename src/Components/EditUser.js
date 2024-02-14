@@ -266,7 +266,7 @@ useEffect(() => {
                 setSubmitting(false);
                 resetForm();
                 Navigate("/")
-              }
+            }
 
               
           } catch (error) {

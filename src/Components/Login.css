@@ -19,7 +19,7 @@
   .sign-in__backdrop {
     position: absolute;
     inset: 0;
-    background-color: #ccc;
+  
   }
   
   .sign-in__wrapper form {
@@ -29,11 +29,31 @@
     animation: showSignInForm 1s;
   }
   
+
+  /* body{
+    background: url('../Components/nate-grant-lQhe-qlxWT8-unsplash.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+  } */
+
+
+  .sign-in-bg-img{
+    background: url('../../public/bg-2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+
+
+
   /* .sign-in__wrapper form img {
     width: 4rem;
   } */
   
-  /* @keyframes showSignInForm {
+  @keyframes showSignInForm {
     0%,
     30% {
       transform: translate(0, -150%);
@@ -46,5 +66,5 @@
     100% {
       transform: translate(0, 0);
     }
-  } */
+  }
   

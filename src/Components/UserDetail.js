@@ -18,6 +18,7 @@ const UserDetail = () => {
     });
 
   }, []);
+
   if (userData[0] != null) {
 
     return (
@@ -66,15 +67,12 @@ const UserDetail = () => {
               </table>
             }
             <div className="clearfix"></div>
-            <Link className="btn btn-danger" to="/">
+            <Link className="btn btn-danger" to="/user/showuser">
               Back to Dashboard
             </Link>
           </div>
         </div>
       </div>
-
-
-
     )
 
   }

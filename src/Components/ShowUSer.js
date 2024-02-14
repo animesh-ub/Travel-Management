@@ -6,7 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import "./ShowUser.css";
 
-const ShowUSer = () => {
+const ShowUSer = ({currUser}) => {
+     
     const [currentPage, setcurrentPage] = useState(1);
     const recordsPerPage = 5;
     const lastIndex = currentPage * recordsPerPage;
@@ -66,14 +67,17 @@ const ShowUSer = () => {
     }, []);
 
     return (
-        <div className='container showUSer-container'>
+        currUser === "admin" ?
+
+
+            <div className='container showUSer-container'>
             <div className='card show-all-card'>
                 <div className='card-title showTable-title'>
                     <h2> All Users</h2>
                 </div>
                 <div className='card-body'>
                     <div className='addNew-btn'>
-                        <Link to="user/create" className="btn btn-success">Add New (+)</Link>
+                        <Link to="/user/create" className="btn btn-success">Add New (+)</Link>
                     </div>
                     <table className='table table-striped'>
                         <thead>
@@ -130,6 +134,7 @@ const ShowUSer = () => {
                 </div>
             </div>
         </div>
+        : <div className=""> Unauthorized User</div>        
     );
 };
 

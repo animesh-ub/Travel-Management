@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
+import { ToastContainer, toast } from 'react-toastify';
 import * as Yup from 'yup';
 import './registration.css';
+import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
-
 
 
 const Registration = () => {
@@ -113,7 +114,11 @@ const Registration = () => {
                 if(response.ok)
                 {
                     // console.log('User added');
-                    alert("Saved Successfully");
+                    // alert("Saved Successfully");
+                    toast.success("Registered Successful", {
+                        position: "top-center",
+                        autoClose: 1000,
+                      });
                     resetForm();
                     Navigate("/")
                 }
@@ -121,6 +126,10 @@ const Registration = () => {
                 
             } catch (error) {
                 console.error('Error adding user:', error);
+                toast.error("Error in Registration", {
+                    position: "top-center",
+                    autoClose: 1000,
+                  });
               
                 // setSubmitting(false);
 
@@ -134,11 +143,12 @@ const Registration = () => {
 
 
     return (
-        <div className="container-fluid">
+        <div className="container registration-bg-img">
             <div>
                 <div className="row justify-content-center form-wrapper my-2">
                     <div className="col-md-6 form">
                         <h1 className="text-center mb-4 rHeading">Add User</h1>
+                        <ToastContainer />
                         <form onSubmit={formik.handleSubmit}>
                             <div className="row g-3">
                                 <div className="col-md-6 label-text-style align-items-start">
@@ -229,7 +239,7 @@ const Registration = () => {
                                     <input
                                         id="address"
                                         name="address"
-                                        type="textarea"
+                                        type="text-a"
                                         placeholder='Address'
                                         className={`form-control-sm form-control dark-border ${formik.touched.address && formik.errors.address ? 'is-invalid' : ''}`}
                                         onChange={formik.handleChange}
